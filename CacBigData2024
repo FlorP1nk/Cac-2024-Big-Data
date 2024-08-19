@@ -1,0 +1,310 @@
+1) Importación de Librerías y datasets
+
+a) Importación de Librerías
+
+[ ]
+import pandas as pd
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import seaborn as sns
+import os
+%matplotlib inline
+b) Importación de Datasets
+
+
+[ ]
+from google.colab import drive
+drive.mount('/content/drive')
+Mounted at /content/drive
+
+[ ]
+import os
+os.chdir('/content/drive/MyDrive/TP EQUIPO 1-09 c24009/TP parte 2')
+
+[ ]
+# Importar el dataset distributors_profiles
+df_distributors_profiles = pd.read_csv('/content/drive/MyDrive/TP EQUIPO 1-09 c24009/TP parte 2/Google Sheets_ c24009 - Grupo 01- TP P2 -distributors_profiles.csv', thousands = '.')
+
+# Importar el dataset exports_to_Paraguay
+df_exports_to_Paraguay = pd.read_csv('/content/drive/MyDrive/TP EQUIPO 1-09 c24009/TP parte 2/Google Sheets_ c24009 - Grupo 01- TP P2 -exports_to_Paraguay.csv', thousands = '.')
+
+# Importar el dataset locations_profiles
+df_locations_profiles = pd.read_csv('/content/drive/MyDrive/TP EQUIPO 1-09 c24009/TP parte 2/Google Sheets_ c24009 - Grupo 01- TP P2 -locations_profiles.csv', thousands = '.')
+
+# Importar el dataset sales_in_Paraguay
+df_sales_in_Paraguay = pd.read_csv('/content/drive/MyDrive/TP EQUIPO 1-09 c24009/TP parte 2/Google Sheets_ c24009 - Grupo 01- TP P2 -sales_in_Paraguay.csv', thousands = '.')
+2) Inspección preliminar y limpieza de Datasets
+
+a) distributors_profiles
+
+
+[ ]
+# Inspección: Cantidad de filas y columnas y tipo de datos:
+print("\nChequeos básicos para el dataset de información de productos:")
+print("Número de filas y columnas:", df_distributors_profiles.shape)
+print("\nPrimeras filas del dataset:")
+print(df_distributors_profiles.head())
+print("\nTipos de datos de cada columna:")
+print(df_distributors_profiles.dtypes)
+
+# Detección y eliminación de datos faltantes:
+print("\nValores faltantes por columna:")
+print(df_distributors_profiles.isnull().sum())
+
+print("\nEliminación de datos faltantes:")
+print(df_distributors_profiles.dropna().isnull().count())
+
+# Detección y eliminación de datos duplicados:
+print("\nValores duplicados:")
+print(df_distributors_profiles.duplicated().sum())
+
+print("\nEliminación de datos duplicados:")
+print(df_distributors_profiles.drop_duplicates().count())
+
+# Detección y eliminación de filas innecesarias:
+df_distributors_profiles.drop(df_distributors_profiles[df_distributors_profiles['id'] == "electrowelde"].index, inplace=True)
+df_distributors_profiles.drop(df_distributors_profiles[df_distributors_profiles['id'] == 44].index, inplace=True)
+
+# Columnas relevantes:
+print("\nColumnas relevantes:")
+columnas_relevantes_distributors_profiles = ['id', 'distributor activities']
+df_distributors_profiles_filtrado = df_distributors_profiles[columnas_relevantes_distributors_profiles]
+print(df_distributors_profiles_filtrado.head())
+
+# Inspección: Cantidad de filas y columnas post tratamiento:
+print("\nNuevo número de filas y columnas:", df_distributors_profiles_filtrado.shape)
+b) exports_to_Paraguay
+
+
+[ ]
+# Inspección: Cantidad de filas y columnas y tipo de datos:
+print("\nChequeos básicos para el dataset de información de productos:")
+print("Número de filas y columnas:", df_exports_to_Paraguay.shape)
+print("\nPrimeras filas del dataset:")
+print(df_exports_to_Paraguay.head())
+print("\nTipos de datos de cada columna:")
+print(df_exports_to_Paraguay.dtypes)
+
+# Detección y eliminación de datos faltantes:
+print("\nValores faltantes por columna:")
+print(df_exports_to_Paraguay.isnull().sum())
+
+print("\nEliminación de datos faltantes:")
+print(df_exports_to_Paraguay.dropna().isnull().sum())
+
+# Detección y eliminación de datos duplicados:
+print("\nValores duplicados:")
+print(df_exports_to_Paraguay.duplicated().sum())
+
+print("\nEliminación de datos duplicados:")
+print(df_exports_to_Paraguay.drop_duplicates().count())
+
+# Detección y eliminación de columnas sobrantes:
+print("\nColumnas sobrantes:")
+print(df_exports_to_Paraguay.drop("Unnamed: 13", axis=1, inplace=True))
+print(df_exports_to_Paraguay.drop("Unnamed: 14", axis=1, inplace=True))
+print(df_exports_to_Paraguay.drop("Columnas", axis=1, inplace=True))
+
+# Columnas relevantes para el análisis según material:
+print("\nColumnas relevantes para el análisis según material:")
+columnas_relevantes_exports_to_Paraguay = ["Rubber", "Brass", "Vinyl", "Granite", "Stone", "Brick", "Aluminum", "Glass", "Plexiglass", "Steel", "Wood", "Plastic"]
+df_exports_to_Paraguay_filtrado = df_exports_to_Paraguay[columnas_relevantes_exports_to_Paraguay]
+print(df_exports_to_Paraguay_filtrado.head())
+
+# Inspección: Cantidad de filas y columnas post tratamiento:
+print("\nNuevo número de filas y columnas:", df_exports_to_Paraguay_filtrado.shape)
+c) locations_profiles
+
+
+[ ]
+# Inspección: Cantidad de filas y columnas y tipo de datos:
+print("\nChequeos básicos para el dataset de información de productos:")
+print("\n Número de filas y columnas:", df_locations_profiles.shape)
+print("\nPrimeras filas del dataset:")
+print(df_locations_profiles.head())
+print("\nTipos de datos de cada columna:")
+print(df_locations_profiles.dtypes)
+
+# Detección y eliminación de datos faltantes:
+print("\nValores faltantes por columna:")
+print(df_locations_profiles.isnull().sum())
+
+print("\nEliminación de datos faltantes:")
+print(df_locations_profiles.dropna().isnull().sum())
+
+# Detección y eliminación de datos duplicados:
+print("\nValores duplicados:")
+print(df_locations_profiles.duplicated().sum())
+
+print("\nEliminación de datos duplicados:")
+print(df_locations_profiles.drop_duplicates().count())
+
+# Columnas relevantes:
+print("\nColumnas relevantes:")
+columnas_relevantes_locations_profiles = ["PYid", "department", "activities"]
+df_locations_profiles_filtrado = df_locations_profiles[columnas_relevantes_locations_profiles]
+print(df_locations_profiles_filtrado.head())
+
+# Inspección: Cantidad de filas y columnas post tratamiento:
+print("\nNuevo número de filas y columnas:", df_locations_profiles_filtrado.shape)
+d) sales_in_Paraguay
+
+
+[ ]
+# Inspección: Cantidad de filas y columnas y tipo de datos:
+print("\nChequeos básicos para el dataset de información de productos:")
+print("Número de filas y columnas:", df_sales_in_Paraguay.shape)
+print("\nPrimeras filas del dataset:")
+print(df_sales_in_Paraguay.head())
+print("\nTipos de datos de cada columna:")
+print(df_sales_in_Paraguay.dtypes)
+
+# Detección y eliminación de datos faltantes:
+print("\nValores faltantes por columna:")
+print(df_sales_in_Paraguay.isnull().sum())
+
+print("\nEliminación de datos faltantes:")
+print(df_sales_in_Paraguay.dropna().isnull().sum())
+
+# Detección y eliminación de datos duplicados:
+print("\nValores duplicados:")
+print(df_sales_in_Paraguay.duplicated().sum())
+
+print("\nEliminación de datos duplicados:")
+print(df_sales_in_Paraguay.drop_duplicates().count())
+
+# Detección y eliminación de filas innecesarias:
+df_sales_in_Paraguay.drop(df_sales_in_Paraguay[df_sales_in_Paraguay['distributor'] == "total"].index, inplace=True)
+df_sales_in_Paraguay.drop(df_sales_in_Paraguay[df_sales_in_Paraguay['distributor']=="control"].index, inplace=True)
+df_sales_in_Paraguay.drop(df_sales_in_Paraguay[df_sales_in_Paraguay['distributor']=="dif centavos"].index, inplace=True)
+
+# Columnas relevantes para el análisis según material:
+print("\nColumnas relevantes para el análisis según material:")
+columnas_relevantes_sales_in_Paraguay = ["Rubber", "Brass", "Vinyl", "Granite", "Stone", "Brick", "Aluminum", "Glass", "Plexiglass", "Steel", "Wood", "Plastic"]
+df_sales_in_Paraguay_filtrado = df_sales_in_Paraguay[columnas_relevantes_sales_in_Paraguay]
+print(df_sales_in_Paraguay_filtrado.head())
+
+# Inspección: Cantidad de filas y columnas post tratamiento:
+print("\nNuevo número de filas y columnas:", df_sales_in_Paraguay_filtrado.shape)
+3) Modelado
+
+a) Conversión de datos tipo object (moneda) a float en df_sales_in_Paraguay_filtrado
+
+
+[ ]
+# Reemplazo de símbolos "$" y "." por espacios, y "," por puntos, para poder cambiar tipo de datos a flotante
+df_sales_in_Paraguay_filtrado2 = df_sales_in_Paraguay_filtrado.replace('[\$.]', '', regex=True).replace('[\,]', '.', regex=True).astype(float)
+
+# Eliminación de sistema de notación científica
+pd.set_option('display.float_format', lambda x: '%.2f' % x)
+
+# Impresión de tipo de datos cambiados
+print(df_sales_in_Paraguay_filtrado2.dtypes)
+
+# Impresión de las primeras filas del dataset con los tipos de datos cambiados
+print(df_sales_in_Paraguay_filtrado2.head())
+b) Conversión de datos tipo object (moneda) a float en df_exports_to_Paraguay_filtrado
+
+
+[ ]
+# Reemplazo de símbolos "$" y "." por espacios, y "," por puntos, para poder cambiar tipo de datos a flotante
+df_exports_to_Paraguay_filtrado2 = df_exports_to_Paraguay_filtrado.replace('[\$.]', '', regex=True).replace('[\,]', '.', regex=True).astype(float)
+
+# Impresión de tipo de datos cambiados
+print(df_exports_to_Paraguay_filtrado2.dtypes)
+
+# Impresión de las primeras filas del dataset con los tipos de datos cambiados
+print(df_exports_to_Paraguay_filtrado2.head())
+c) Concatenación de las tablas sales y exports según tipo de material
+
+
+[ ]
+# Concatenación de DataFrames
+ventas_vs_exportaciones = pd.concat([df_sales_in_Paraguay_filtrado2.sum(), df_exports_to_Paraguay_filtrado2.sum()], axis=1)
+
+# Renombre de las columnas concatenadas
+ventas_vs_exportaciones.columns = ["Ventas", "Exportaciones"]
+
+print("\nVentas vs Exportaciones según material")
+print(ventas_vs_exportaciones)
+
+# Cálculo de ROI
+ventas_vs_exportaciones = ventas_vs_exportaciones.assign(ROI_pesos = (ventas_vs_exportaciones["Ventas"] - ventas_vs_exportaciones["Exportaciones"])).assign(ROI_porcentaje = ((ventas_vs_exportaciones["Ventas"] - ventas_vs_exportaciones["Exportaciones"]) / ventas_vs_exportaciones["Exportaciones"]) * 100)
+
+# Orden según ROI en modo Descendente
+ventas_vs_exportaciones.sort_values(by="ROI_pesos", ascending=False, inplace=True)
+
+print("\nDiferencia entre Ventas y Exportaciones y ROI calculado")
+print(ventas_vs_exportaciones)
+d) Redondeo de valores de ventas_vs_exportaciones para ser mostrados en el gráfico de manera resumida
+
+
+[ ]
+def round_to_millions(number):
+  rounded_number = round(number / 1000000000, 2)
+  return rounded_number
+
+ventas_vs_exportaciones["Ventas"] = ventas_vs_exportaciones["Ventas"].apply(round_to_millions)
+ventas_vs_exportaciones["Exportaciones"] = ventas_vs_exportaciones["Exportaciones"].apply(round_to_millions)
+ventas_vs_exportaciones["ROI_pesos"] = ventas_vs_exportaciones["ROI_pesos"].apply(round_to_millions)
+
+print(ventas_vs_exportaciones)
+
+4) Gráficos
+
+a) Ventas vs Exportaciones según material
+
+
+[ ]
+# Creación del gráfico de barras
+subset = ["Ventas", "Exportaciones"]
+ventas_vs_exportaciones[subset].plot(kind='bar', stacked=False, figsize=(10, 6), width=0.8, color=["Green", "Red"])
+
+# Título del gráfico
+plt.title("Ventas vs Exportaciones por Material", fontsize=10)
+
+# Título de los ejes
+plt.xlabel("Materiales", fontsize=10)
+plt.ylabel("Valor", fontsize=10)
+
+# Etiquetas de valores
+for i, val in enumerate(ventas_vs_exportaciones["Ventas"]):
+    plt.text(i, val, f"{val:.2f}", ha="right", va="bottom", fontsize=7)
+for i, val in enumerate(ventas_vs_exportaciones["Exportaciones"]):
+    plt.text(i, val, f"{val:.2f}", ha="left", va="bottom", fontsize=7)
+
+# Configuración del gráfico
+plt.legend(["Ventas (miles de millones)", "Exportaciones (miles de millones)"], fontsize=10)
+plt.tight_layout()
+plt.xticks(rotation=90)
+
+# Impresión del gráfico
+plt.show()
+
+b) ROI según material
+
+
+[ ]
+# Creación del gráfico de barras
+subset = ["ROI_porcentaje"]
+ventas_vs_exportaciones[subset].plot(kind='bar', stacked=False, figsize=(10, 6), width=0.8, color=["Blue"])
+
+# Título del gráfico
+plt.title("ROI por Material", fontsize=10)
+
+# Título de los ejes
+plt.xlabel("Materiales", fontsize=10)
+plt.ylabel("Porcentaje de ROI", fontsize=10)
+
+# Etiquetas de valores
+for i, val in enumerate(ventas_vs_exportaciones["ROI_porcentaje"]):
+    plt.text(i, val, f"{val:.2f}", ha="left", va="bottom", fontsize=7)
+
+# Configuración del gráfico
+plt.legend(fontsize=10)
+plt.tight_layout()
+plt.xticks(rotation=90)
+
+# Impresión del gráfico
+plt.show()
